@@ -1,0 +1,239 @@
+package com.example.impostorgame
+
+import android.os.Bundle
+import android.provider.CalendarContract
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
+import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.impostorgame.ui.theme.ImpostorGameTheme
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            ImpostorGameTheme {
+
+                Column(
+                    modifier = Modifier.fillMaxSize()
+                        .background(Color.Black),
+
+                    horizontalAlignment = Alignment.CenterHorizontally ,
+                    verticalArrangement = Arrangement.Center
+
+                ) {
+                    Inicio(Modifier.weight(20f))
+                    Menu(Modifier.weight(60f))
+                    Footer(Modifier.weight(20f))
+
+                }
+
+            }
+        }
+    }
+}
+
+@Composable
+fun Inicio(modifier :  Modifier){
+    Column(modifier = modifier ,
+         horizontalAlignment =  Alignment.CenterHorizontally ,
+        verticalArrangement = Arrangement.Center) {
+
+        Text(
+            text = "El impostor" ,
+            color = Color.Red,
+            fontSize = 24.sp
+        )
+    }
+
+
+
+}
+@Composable
+fun Menu(modifier : Modifier){
+    var cantidadJugadores  = 0 ;
+    var cantidadImpostores = 0 ;
+
+    Column(modifier = modifier
+    ) {
+        Row(
+            modifier = Modifier
+                .border(border = BorderStroke(width = 2.dp , color = Color.White),
+                    shape = RoundedCornerShape(50.dp))
+                .padding(20.dp)
+                .padding(horizontal = 30.dp)
+        ){
+            Text(text = "Modo de juego " ,
+                color = Color.White)
+
+            Button(
+                onClick = {} ,
+
+            ) {
+                Text(
+                    text = " > "
+                )
+            }
+        }
+
+        Column(modifier = Modifier.
+        border(border = BorderStroke(2.dp , color = Color.White) ,
+            shape = RoundedCornerShape(50.dp))
+        ) {
+
+            Row(
+                modifier = Modifier
+                    .padding(20.dp)
+                    .padding(horizontal = 30.dp)
+                ,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Text(text = "Jugadores " ,
+                    color = Color.White )
+                Button(onClick = {}
+                , modifier = Modifier
+                        .size(height = 40.dp , width = 40.dp),
+                contentPadding = PaddingValues(0.dp)
+
+                ) {
+                    Text(text = " - ")
+                }
+                Button(onClick = {},
+                    modifier = Modifier
+                        .size(height = 40.dp , width = 40.dp)
+                ,contentPadding = PaddingValues(0.dp))
+                {
+                    Text(text = " + ")
+                }
+
+            }
+
+
+            Row(
+                modifier = Modifier
+                    .padding(20.dp)
+                    .padding(horizontal = 30.dp)
+                ,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(text = "Impostores " ,
+                    color = Color.White )
+                Button(onClick = {}
+                    , modifier = Modifier
+                        .size(height = 40.dp , width = 40.dp),
+                    contentPadding = PaddingValues(0.dp)
+
+                ) {
+                    Text(text = " - ")
+                }
+                Button(onClick = {},
+                    modifier = Modifier
+                        .size(height = 40.dp , width = 40.dp)
+                    ,contentPadding = PaddingValues(0.dp))
+                {
+                    Text(text = " + ")
+                }
+
+            }
+
+
+
+        }
+        Column(modifier = Modifier.
+        border(border = BorderStroke(2.dp , color = Color.White) ,
+            shape = RoundedCornerShape(50.dp))
+        ) {
+
+            Row(
+                modifier = Modifier
+                    .padding(20.dp)
+                    .padding(horizontal = 30.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Text(
+                    text = "Paquetes ",
+                    color = Color.White
+                )
+
+                Button(
+                    onClick = {},
+                    modifier = Modifier
+                        .size(height = 40.dp, width = 40.dp), contentPadding = PaddingValues(0.dp)
+                )
+                {
+                    Text(text = " > ")
+                }
+
+            }
+
+
+            Row(
+                modifier = Modifier
+                    .padding(20.dp)
+                    .padding(horizontal = 30.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Duración ",
+                    color = Color.White
+                )
+                Button(onClick = {}, modifier = Modifier
+                    .size(height = 40.dp, width = 40.dp),
+                    contentPadding = PaddingValues(0.dp)
+
+                ) {
+                    Text(text = " > ")
+                }
+
+            }
+        }
+    }
+}
+@Composable
+fun Footer(modifier : Modifier){
+    Column(modifier = modifier) {
+        Button(
+            onClick = {},
+
+
+        ) {
+            Text("Iniciar el juego ")
+        }
+    }
+
+}
