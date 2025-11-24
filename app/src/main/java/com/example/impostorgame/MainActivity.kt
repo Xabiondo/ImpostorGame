@@ -1,5 +1,6 @@
 package com.example.impostorgame
 
+
 import android.os.Bundle
 import android.provider.CalendarContract
 import androidx.activity.ComponentActivity
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -27,6 +29,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,7 +44,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
 import com.example.impostorgame.ui.theme.ImpostorGameTheme
+
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,24 +58,38 @@ class MainActivity : ComponentActivity() {
         setContent {
             ImpostorGameTheme {
 
-                Column(
-                    modifier = Modifier.fillMaxSize()
-                        .background(Color.Black),
+                val navController = rememberNavController()
 
-                    horizontalAlignment = Alignment.CenterHorizontally ,
-                    verticalArrangement = Arrangement.Center
+                NavHost(
+                    navController = navController ,
+                    startDestination = "pantalla_principal"
 
-                ) {
-                    Inicio(Modifier.weight(20f))
-                    Menu(Modifier.weight(60f))
-                    Footer(Modifier.weight(20f))
+                )
 
-                }
+
+
 
             }
         }
     }
 }
+@Composable
+fun PantallaPrincipal( navController: NavController){
+    Column(
+        modifier = Modifier.fillMaxSize()
+            .background(Color.Black),
+
+        horizontalAlignment = Alignment.CenterHorizontally ,
+        verticalArrangement = Arrangement.Center
+
+    ) {
+        Inicio(Modifier.weight(20f))
+        Menu(Modifier.weight(60f) ,navController)
+        Footer(Modifier.weight(20f))
+
+    }
+}
+
 
 @Composable
 fun Inicio(modifier :  Modifier){
@@ -77,6 +102,10 @@ fun Inicio(modifier :  Modifier){
             color = Color.Red,
             fontSize = 24.sp
         )
+        Image(
+            painter = painterResource( R.drawable.impostor1) ,
+            contentDescription = "impostor" ,
+            modifier = Modifier.size(50.dp))
     }
 
 
@@ -84,17 +113,25 @@ fun Inicio(modifier :  Modifier){
 }
 @Composable
 fun Menu(modifier : Modifier){
-    var cantidadJugadores  = 0 ;
-    var cantidadImpostores = 0 ;
+    var cantidadJugadores by remember { mutableIntStateOf(4) };
+    var cantidadImpostores by remember { mutableIntStateOf(1) };
 
     Column(modifier = modifier
+        .fillMaxWidth()
+        .padding(horizontal = 32.dp) ,
+        horizontalAlignment = Alignment.CenterHorizontally ,
+        verticalArrangement = Arrangement.SpaceEvenly ,
+
     ) {
         Row(
             modifier = Modifier
+                .fillMaxWidth()
                 .border(border = BorderStroke(width = 2.dp , color = Color.White),
                     shape = RoundedCornerShape(50.dp))
                 .padding(20.dp)
-                .padding(horizontal = 30.dp)
+                .padding(horizontal = 30.dp) ,
+            verticalAlignment = Alignment.CenterVertically ,
+            horizontalArrangement = Arrangement.Center
         ){
             Text(text = "Modo de juego " ,
                 color = Color.White)
@@ -119,7 +156,9 @@ fun Menu(modifier : Modifier){
                     .padding(20.dp)
                     .padding(horizontal = 30.dp)
                 ,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically ,
+                horizontalArrangement = Arrangement.SpaceEvenly
+
             ) {
 
                 Text(text = "Jugadores " ,
@@ -132,6 +171,13 @@ fun Menu(modifier : Modifier){
                 ) {
                     Text(text = " - ")
                 }
+                Text(
+                    text = cantidadJugadores.toString(),
+                    color = Color.White,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(horizontal = 15.dp)
+                )
                 Button(onClick = {},
                     modifier = Modifier
                         .size(height = 40.dp , width = 40.dp)
@@ -141,6 +187,10 @@ fun Menu(modifier : Modifier){
                 }
 
             }
+            HorizontalDivider(
+                thickness = 2.dp ,
+                color = Color.Gray
+            )
 
 
             Row(
@@ -160,6 +210,13 @@ fun Menu(modifier : Modifier){
                 ) {
                     Text(text = " - ")
                 }
+                Text(
+                    text = cantidadJugadores.toString(),
+                    color = Color.White,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(horizontal = 15.dp)
+                )
                 Button(onClick = {},
                     modifier = Modifier
                         .size(height = 40.dp , width = 40.dp)
@@ -175,14 +232,16 @@ fun Menu(modifier : Modifier){
         }
         Column(modifier = Modifier.
         border(border = BorderStroke(2.dp , color = Color.White) ,
-            shape = RoundedCornerShape(50.dp))
+            shape = RoundedCornerShape(50.dp) )
+            .fillMaxWidth()
         ) {
 
             Row(
                 modifier = Modifier
                     .padding(20.dp)
                     .padding(horizontal = 30.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically ,
+                horizontalArrangement = Arrangement.Center
             ) {
 
                 Text(
@@ -200,13 +259,18 @@ fun Menu(modifier : Modifier){
                 }
 
             }
+            HorizontalDivider(
+                thickness = 2.dp ,
+                color = Color.Gray
+            )
 
 
             Row(
                 modifier = Modifier
                     .padding(20.dp)
                     .padding(horizontal = 30.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically ,
+                horizontalArrangement = Arrangement.Center
             ) {
                 Text(
                     text = "Duración ",
@@ -224,16 +288,19 @@ fun Menu(modifier : Modifier){
         }
     }
 }
+
 @Composable
-fun Footer(modifier : Modifier){
-    Column(modifier = modifier) {
+fun Footer(modifier: Modifier) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
         Button(
             onClick = {},
-
-
         ) {
             Text("Iniciar el juego ")
         }
     }
-
 }
