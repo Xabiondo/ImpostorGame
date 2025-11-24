@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.impostorgame.ui.theme.ImpostorGameTheme
 
@@ -60,11 +61,21 @@ class MainActivity : ComponentActivity() {
 
                 val navController = rememberNavController()
 
-                NavHost(
-                    navController = navController ,
-                    startDestination = "pantalla_principal"
 
-                )
+                NavHost(
+                    navController = navController,
+                    startDestination = "paquetes"
+                ) {
+
+                    composable("pantalla_principal") {
+                        PantallaPrincipal(navController)
+                    }
+                    composable("paquetes") {
+                        PaquetesPage(navController)
+                    }
+
+
+                }
 
 
 
@@ -75,6 +86,7 @@ class MainActivity : ComponentActivity() {
 }
 @Composable
 fun PantallaPrincipal( navController: NavController){
+
     Column(
         modifier = Modifier.fillMaxSize()
             .background(Color.Black),
@@ -84,7 +96,7 @@ fun PantallaPrincipal( navController: NavController){
 
     ) {
         Inicio(Modifier.weight(20f))
-        Menu(Modifier.weight(60f) ,navController)
+        Menu(Modifier.weight(60f) ,navController  )
         Footer(Modifier.weight(20f))
 
     }
@@ -112,9 +124,8 @@ fun Inicio(modifier :  Modifier){
 
 }
 @Composable
-fun Menu(modifier : Modifier){
-    var cantidadJugadores by remember { mutableIntStateOf(4) };
-    var cantidadImpostores by remember { mutableIntStateOf(1) };
+fun Menu(modifier : Modifier , navController: NavController ){
+
 
     Column(modifier = modifier
         .fillMaxWidth()
@@ -163,7 +174,7 @@ fun Menu(modifier : Modifier){
 
                 Text(text = "Jugadores " ,
                     color = Color.White )
-                Button(onClick = {}
+                Button(onClick = { Variables.jugadores--}
                 , modifier = Modifier
                         .size(height = 40.dp , width = 40.dp),
                 contentPadding = PaddingValues(0.dp)
@@ -172,13 +183,13 @@ fun Menu(modifier : Modifier){
                     Text(text = " - ")
                 }
                 Text(
-                    text = cantidadJugadores.toString(),
+                    text = Variables.jugadores.toString(),
                     color = Color.White,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(horizontal = 15.dp)
                 )
-                Button(onClick = {},
+                Button(onClick = {Variables.jugadores++},
                     modifier = Modifier
                         .size(height = 40.dp , width = 40.dp)
                 ,contentPadding = PaddingValues(0.dp))
@@ -202,7 +213,9 @@ fun Menu(modifier : Modifier){
             ) {
                 Text(text = "Impostores " ,
                     color = Color.White )
-                Button(onClick = {}
+                Button(onClick = {
+                    Variables.impostores--
+                }
                     , modifier = Modifier
                         .size(height = 40.dp , width = 40.dp),
                     contentPadding = PaddingValues(0.dp)
@@ -211,13 +224,13 @@ fun Menu(modifier : Modifier){
                     Text(text = " - ")
                 }
                 Text(
-                    text = cantidadJugadores.toString(),
+                    text = Variables.impostores.toString(),
                     color = Color.White,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(horizontal = 15.dp)
                 )
-                Button(onClick = {},
+                Button(onClick = {Variables.impostores++},
                     modifier = Modifier
                         .size(height = 40.dp , width = 40.dp)
                     ,contentPadding = PaddingValues(0.dp))
@@ -250,7 +263,7 @@ fun Menu(modifier : Modifier){
                 )
 
                 Button(
-                    onClick = {},
+                    onClick = {navController.navigate("paquetes")},
                     modifier = Modifier
                         .size(height = 40.dp, width = 40.dp), contentPadding = PaddingValues(0.dp)
                 )
