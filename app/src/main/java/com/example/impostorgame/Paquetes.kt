@@ -12,9 +12,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.impostorgame.Variables.paquetesUsuario
 
 data class Paquete(
     var tema: String,
@@ -37,22 +40,23 @@ fun PaquetesPage(navController: NavController){
             .padding(horizontal = 50.dp),
         horizontalAlignment = Alignment.CenterHorizontally ,
 
-
-
     ) {
         var listaDePaquetes = remember  {obtenerPaquetes()}
 
         Introduccion(Modifier.weight(20f) , navController)
         ListaDePaquetes(Modifier.weight(80f) , listaDePaquetes as MutableList<Paquete>)
-
     }
 }
-
 @Composable
 fun Introduccion(modifier : Modifier , navController: NavController){
     Text(text = "Seleccionar paquetes " ,
         color = Color.White)
 
+    Row {
+        Button(
+            onClick =  {navController.navigate("pantalla_principal")}
+        ) { }
+    }
 
 }
 
@@ -62,9 +66,12 @@ fun ListaDePaquetes( modifier : Modifier , paquetes : MutableList<Paquete>){
     LazyColumn(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(16.dp)
+
     ) {
 
         items(paquetes) { paquete ->
+
+            val isChecked = remember  { mutableStateOf(false) }
 
             Row(
                 modifier = Modifier
@@ -83,9 +90,18 @@ fun ListaDePaquetes( modifier : Modifier , paquetes : MutableList<Paquete>){
                     color = Color.White
                 )
                 Checkbox(
-                    checked = true,
-                    onCheckedChange = {}
+                    checked = isChecked.value,
+
+                    onCheckedChange = {isChecked.value = it ;
+
+                        if (isChecked.value && !(paquetesUsuario.contains(paquete))){
+                            paquetesUsuario.add(paquete)
+
+                        }else
+                            Variables.paquetesUsuario.remove(paquete);
+                    }
                 )
+
             }
         }
     }

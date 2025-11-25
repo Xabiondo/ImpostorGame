@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -61,7 +62,6 @@ class MainActivity : ComponentActivity() {
 
                 val navController = rememberNavController()
 
-
                 NavHost(
                     navController = navController,
                     startDestination = "paquetes"
@@ -73,12 +73,11 @@ class MainActivity : ComponentActivity() {
                     composable("paquetes") {
                         PaquetesPage(navController)
                     }
-
+                    composable("inicio_juego") {
+                        PreviaPage(navController)
+                    }
 
                 }
-
-
-
 
             }
         }
@@ -97,7 +96,7 @@ fun PantallaPrincipal( navController: NavController){
     ) {
         Inicio(Modifier.weight(20f))
         Menu(Modifier.weight(60f) ,navController  )
-        Footer(Modifier.weight(20f))
+        Footer(Modifier.weight(20f) , navController)
 
     }
 }
@@ -120,12 +119,9 @@ fun Inicio(modifier :  Modifier){
             modifier = Modifier.size(50.dp))
     }
 
-
-
 }
 @Composable
 fun Menu(modifier : Modifier , navController: NavController ){
-
 
     Column(modifier = modifier
         .fillMaxWidth()
@@ -174,7 +170,10 @@ fun Menu(modifier : Modifier , navController: NavController ){
 
                 Text(text = "Jugadores " ,
                     color = Color.White )
-                Button(onClick = { Variables.jugadores--}
+                Button(onClick = { Variables.jugadores-- ;
+                                if (Variables.jugadores / Variables.impostores < 2){
+                                    Variables.impostores--}
+                }
                 , modifier = Modifier
                         .size(height = 40.dp , width = 40.dp),
                 contentPadding = PaddingValues(0.dp)
@@ -215,6 +214,7 @@ fun Menu(modifier : Modifier , navController: NavController ){
                     color = Color.White )
                 Button(onClick = {
                     Variables.impostores--
+
                 }
                     , modifier = Modifier
                         .size(height = 40.dp , width = 40.dp),
@@ -230,17 +230,17 @@ fun Menu(modifier : Modifier , navController: NavController ){
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(horizontal = 15.dp)
                 )
-                Button(onClick = {Variables.impostores++},
+                Button(onClick = {
+                    if (Variables.jugadores / Variables.impostores >2){
+                    Variables.impostores++
+                }},
                     modifier = Modifier
                         .size(height = 40.dp , width = 40.dp)
                     ,contentPadding = PaddingValues(0.dp))
                 {
                     Text(text = " + ")
                 }
-
             }
-
-
 
         }
         Column(modifier = Modifier.
@@ -277,7 +277,6 @@ fun Menu(modifier : Modifier , navController: NavController ){
                 color = Color.Gray
             )
 
-
             Row(
                 modifier = Modifier
                     .padding(20.dp)
@@ -303,7 +302,7 @@ fun Menu(modifier : Modifier , navController: NavController ){
 }
 
 @Composable
-fun Footer(modifier: Modifier) {
+fun Footer(modifier: Modifier , navController: NavController) {
     Column(
         modifier = modifier.fillMaxWidth(),
 
@@ -311,7 +310,7 @@ fun Footer(modifier: Modifier) {
         verticalArrangement = Arrangement.Center
     ) {
         Button(
-            onClick = {},
+            onClick = {navController.navigate("inicio_juego")},
         ) {
             Text("Iniciar el juego ")
         }

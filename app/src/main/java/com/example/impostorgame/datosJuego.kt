@@ -19,7 +19,9 @@ fun obtenerPaquetes(): List<Paquete>{
     )
 
 }
-fun iniciarPartida(): Partida{
+/*fun iniciarPartida(): Partida{
+    var partida = Partida()
+    return
 
 
-}
+}*/
