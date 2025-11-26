@@ -26,10 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.impostorgame.Variables.paquetesUsuario
 
-data class Paquete(
-    var tema: String,
-    var palabras: MutableList<String> = mutableListOf()
-)
 
 @Composable
 fun PaquetesPage(navController: NavController){
