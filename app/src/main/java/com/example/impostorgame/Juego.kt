@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
+import kotlin.random.Random
 
 @Composable
 fun JuegoPage(navController: NavController) {
@@ -37,9 +38,23 @@ fun JuegoPage(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally ,
         verticalArrangement = Arrangement.Center
     ) {
+
         InicioJuego(Modifier.weight(20f))
         PageJugador(Jugador("sabi"), Modifier.weight(80f))
     }
+}
+fun EleccionPalabra() : String{
+    var todasOpciones : ArrayList<String> = ArrayList<String>();
+    var palabra = ""
+    Variables.paquetesUsuario.forEach { paquete ->
+        todasOpciones.addAll(paquete.palabras)
+
+
+    }
+    var numAleatorio = Random.nextInt(0 , todasOpciones.size)
+    palabra = todasOpciones.get(numAleatorio)
+    return palabra
+
 }
 @Composable
 fun InicioJuego(modifier: Modifier ){
@@ -48,11 +63,11 @@ fun InicioJuego(modifier: Modifier ){
 
 }
 
-
 @Composable
 fun PageJugador(jugador: Jugador, modifier: Modifier = Modifier) {
     val offset = remember { Animatable(Offset.Zero, Offset.VectorConverter) }
     val scope = rememberCoroutineScope()
+    val palabraSecreta = remember { EleccionPalabra() }
 
     Column(modifier = modifier) {
         Box(

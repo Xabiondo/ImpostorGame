@@ -26,16 +26,12 @@ import kotlin.random.Random
 
 @Composable
 fun PreviaPage(navController: NavController){
-    val totalCiviles = remember { 0 }
+
     val totalImpostores = remember { Variables.impostores }
     val totalJugadores = remember { Variables.jugadores + Variables.impostores }
     val listaJugadores = remember { mutableStateListOf<Jugador>() }
     var nombreActual = remember { mutableStateOf("") }
     val indice = listaJugadores.size +1
-    var partida = Partida(
-        jugadores = ArrayList<Jugador>() ,
-        paquetes = Variables.paquetesUsuario,
-    )
 
     Column(
         modifier = Modifier
