@@ -1,5 +1,6 @@
 package com.example.impostorgame
 
+import android.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -17,17 +18,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import java.util.ArrayList
-
+import kotlin.random.Random
 
 
 @Composable
 fun PreviaPage(navController: NavController){
     val totalCiviles = remember { 0 }
-    val totalImpostores = remember { 0 }
+    val totalImpostores = remember { Variables.impostores }
     val totalJugadores = remember { Variables.jugadores + Variables.impostores }
     val listaJugadores = remember { mutableStateListOf<Jugador>() }
     var nombreActual = remember { mutableStateOf("") }
@@ -40,17 +40,20 @@ fun PreviaPage(navController: NavController){
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Red)
+            .background(Color.Black)
             .padding(horizontal = 50.dp),
         horizontalAlignment = Alignment.CenterHorizontally ,
 
     ) {
-        Text("has elegido " + Variables.jugadores)
+        Text("has elegido " + Variables.jugadores + " Jugadores" ,
+            color = Color.White)
 
-        Text("has elegido " + Variables.impostores)
+        Text("has elegido " + Variables.impostores + " impostores " ,
+            color =  Color.White)
 
         Variables.paquetesUsuario.forEach {paquete ->
-            Text(text = "has elegido la tematica " + paquete.tema)
+            Text(text = "has elegido la tematica " + paquete.tema
+            , color = Color.White)
         }
 
         if (listaJugadores.size < totalJugadores){
@@ -82,11 +85,36 @@ fun PreviaPage(navController: NavController){
             }
 
 
-        }else
-            Text(text = "ya estamos todos")
+        }else{
+            Text("todos listos para empezar" , color = Color.White)
+            Spacer(modifier = Modifier.height(20.dp))
 
-
+            Button(
+                onClick = {
+                    asignarRoles(jugadores = listaJugadores , numImpostores = totalImpostores , navController)
+                    navController.navigate("juego")
+                }
+            ) {
+                Text("vamos a empezarrrrrrrrr")
+            }
+        }
 
 
     }
+}
+
+fun asignarRoles ( jugadores: MutableList<Jugador> , numImpostores: Int , navController: NavController){
+    for (jugador in jugadores) {
+        jugador.rol = Rol.CIVIL
+    }
+
+    val valoresBarajeados = (jugadores.indices).shuffled()
+
+    for (i in  0..numImpostores -1){
+        val indiceImpostor = valoresBarajeados[i]
+        jugadores[indiceImpostor].rol = Rol.IMPOSTOR;
+    }
+    Variables.listaJugadores = jugadores ;
+
+
 }

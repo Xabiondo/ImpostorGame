@@ -64,7 +64,7 @@ class MainActivity : ComponentActivity() {
 
                 NavHost(
                     navController = navController,
-                    startDestination = "paquetes"
+                    startDestination = "juego"
                 ) {
 
                     composable("pantalla_principal") {
@@ -75,6 +75,11 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("inicio_juego") {
                         PreviaPage(navController)
+                    }
+                    composable ("juego") {
+                        JuegoPage(navController)
+
+
                     }
 
                 }
@@ -310,7 +315,12 @@ fun Footer(modifier: Modifier , navController: NavController) {
         verticalArrangement = Arrangement.Center
     ) {
         Button(
-            onClick = {navController.navigate("inicio_juego")},
+            onClick = {
+                if (Variables.jugadores < 1 || Variables.impostores < 1 || Variables.paquetesUsuario.isEmpty()){
+                    return@Button
+
+                }
+                    navController.navigate("inicio_juego")},
         ) {
             Text("Iniciar el juego ")
         }

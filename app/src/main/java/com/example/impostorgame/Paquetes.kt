@@ -102,6 +102,4 @@ fun ListaDePaquetes( modifier : Modifier , paquetes : MutableList<Paquete>){
         }
     }
 }
-fun sumarPaquete(){
 
-}
