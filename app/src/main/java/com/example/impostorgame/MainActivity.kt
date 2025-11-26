@@ -64,7 +64,7 @@ class MainActivity : ComponentActivity() {
 
                 NavHost(
                     navController = navController,
-                    startDestination = "juego"
+                    startDestination = "pantalla_principal"
                 ) {
 
                     composable("pantalla_principal") {
@@ -73,7 +73,7 @@ class MainActivity : ComponentActivity() {
                     composable("paquetes") {
                         PaquetesPage(navController)
                     }
-                    composable("inicio_juego") {
+                    composable("previa") {
                         PreviaPage(navController)
                     }
                     composable ("juego") {
@@ -320,7 +320,7 @@ fun Footer(modifier: Modifier , navController: NavController) {
                     return@Button
 
                 }
-                    navController.navigate("inicio_juego")},
+                    navController.navigate("previa")},
         ) {
             Text("Iniciar el juego ")
         }

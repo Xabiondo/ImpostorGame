@@ -1,7 +1,7 @@
 package com.example.impostorgame
 
 class Jugador(nombre: String) {
-    var nombre : String = "";
+    var nombre : String = nombre;
     var rol : Rol = Rol.CIVIL;
 
 }
